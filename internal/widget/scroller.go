@@ -1,11 +1,11 @@
 package widget
 
 import (
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/internal/cache"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal/cache"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 // ScrollDirection represents the directions in which a Scroll can scroll its child content.
@@ -392,13 +392,13 @@ func (s *Scroll) CreateRenderer() fyne.WidgetRenderer {
 
 // ScrollToBottom will scroll content to container bottom - to show latest info which end user just added
 func (s *Scroll) ScrollToBottom() {
-	s.scrollBy(0, -1*(s.Content.MinSize().Height-s.Size().Height-s.Offset.Y))
+	s.ScrollBy(0, -1*(s.Content.MinSize().Height-s.Size().Height-s.Offset.Y))
 	s.Refresh()
 }
 
 // ScrollToTop will scroll content to container top
 func (s *Scroll) ScrollToTop() {
-	s.scrollBy(0, -s.Offset.Y)
+	s.ScrollBy(0, -s.Offset.Y)
 }
 
 // DragEnd will stop scrolling on mobile has stopped
@@ -459,10 +459,10 @@ func (s *Scroll) refreshWithoutOffsetUpdate() {
 
 // Scrolled is called when an input device triggers a scroll event
 func (s *Scroll) Scrolled(ev *fyne.ScrollEvent) {
-	s.scrollBy(ev.Scrolled.DX, ev.Scrolled.DY)
+	s.ScrollBy(ev.Scrolled.DX, ev.Scrolled.DY)
 }
 
-func (s *Scroll) scrollBy(dx, dy float32) {
+func (s *Scroll) ScrollBy(dx, dy float32) {
 	if s.Size().Width < s.Content.MinSize().Width && s.Size().Height >= s.Content.MinSize().Height && dx == 0 {
 		dx, dy = dy, dx
 	}

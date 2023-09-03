@@ -41,10 +41,10 @@ import (
 	"time"
 	"unsafe"
 
-	"fyne.io/fyne/v2/internal/driver/mobile/event/lifecycle"
-	"fyne.io/fyne/v2/internal/driver/mobile/event/paint"
-	"fyne.io/fyne/v2/internal/driver/mobile/event/size"
-	"fyne.io/fyne/v2/internal/driver/mobile/event/touch"
+	"github.com/emersonkopp/fyne/internal/driver/mobile/event/lifecycle"
+	"github.com/emersonkopp/fyne/internal/driver/mobile/event/paint"
+	"github.com/emersonkopp/fyne/internal/driver/mobile/event/size"
+	"github.com/emersonkopp/fyne/internal/driver/mobile/event/touch"
 )
 
 var initThreadID uint64
@@ -62,9 +62,9 @@ func init() {
 }
 
 func main(f func(App)) {
-	//if tid := uint64(C.threadID()); tid != initThreadID {
+	// if tid := uint64(C.threadID()); tid != initThreadID {
 	//	log.Fatalf("app.Run called on thread %d, but app.init ran on %d", tid, initThreadID)
-	//}
+	// }
 
 	go func() {
 		f(theApp)

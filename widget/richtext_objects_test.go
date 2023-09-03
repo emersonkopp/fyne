@@ -6,10 +6,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/storage"
-	"fyne.io/fyne/v2/test"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/storage"
+	"github.com/emersonkopp/fyne/test"
 )
 
 func TestRichText_Image(t *testing.T) {

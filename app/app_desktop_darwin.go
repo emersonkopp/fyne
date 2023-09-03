@@ -21,8 +21,8 @@ import (
 
 	"golang.org/x/sys/execabs"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 // SetSystemTrayMenu creates a system tray item and attaches the specified menu.

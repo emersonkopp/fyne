@@ -6,8 +6,8 @@ package app
 import (
 	"syscall/js"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 func defaultVariant() fyne.ThemeVariant {

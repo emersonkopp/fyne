@@ -3,10 +3,10 @@ package tutorials
 import (
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/container"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 func windowScreen(_ fyne.Window) fyne.CanvasObject {

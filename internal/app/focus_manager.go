@@ -3,8 +3,8 @@ package app
 import (
 	"sync"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/internal/driver"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/internal/driver"
 )
 
 // FocusManager represents a standard manager of input focus for a canvas
@@ -33,7 +33,7 @@ func (f *FocusManager) Focus(obj fyne.Focusable) bool {
 				if hiddenAncestor == nil && !object.Visible() {
 					hiddenAncestor = object
 				}
-				if object == obj.(fyne.CanvasObject) {
+				if co, ok := obj.(fyne.CanvasObject); ok && object == co {
 					hidden = hiddenAncestor != nil
 					return true
 				}

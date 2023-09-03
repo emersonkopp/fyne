@@ -3,7 +3,7 @@
 
 package mobile
 
-import "fyne.io/fyne/v2"
+import "github.com/emersonkopp/fyne"
 
 const tapYOffset = 0 // no finger compensation on desktop (simulation)
 

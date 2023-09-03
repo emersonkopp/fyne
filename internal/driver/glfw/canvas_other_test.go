@@ -8,8 +8,8 @@ package glfw
 import (
 	"testing"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/container"
 
 	"github.com/stretchr/testify/assert"
 )

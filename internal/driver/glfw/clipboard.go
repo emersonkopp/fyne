@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"time"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -33,7 +33,7 @@ func (c *clipboard) Content() string {
 		}
 		time.Sleep(50 * time.Millisecond)
 	}
-	//can't log retry as it would alos log errors for an empty clipboard
+	// can't log retry as it would alos log errors for an empty clipboard
 	return ""
 }
 

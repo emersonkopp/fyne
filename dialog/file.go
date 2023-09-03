@@ -8,12 +8,12 @@ import (
 	"runtime"
 	"strings"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/storage"
-	"fyne.io/fyne/v2/storage/repository"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/container"
+	"github.com/emersonkopp/fyne/storage"
+	"github.com/emersonkopp/fyne/storage/repository"
+	"github.com/emersonkopp/fyne/theme"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 type viewLayout int
@@ -708,7 +708,7 @@ func (f *FileDialog) SetFilter(filter storage.FileFilter) {
 func (f *FileDialog) SetFileName(fileName string) {
 	if f.save {
 		f.initialFileName = fileName
-		//Update entry if fileDialog has already been created
+		// Update entry if fileDialog has already been created
 		if f.dialog != nil {
 			f.dialog.fileName.SetText(fileName)
 		}

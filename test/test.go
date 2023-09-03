@@ -9,12 +9,12 @@ import (
 	"testing"
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/internal/cache"
-	"fyne.io/fyne/v2/internal/driver"
-	"fyne.io/fyne/v2/internal/painter/software"
-	"fyne.io/fyne/v2/internal/test"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal/cache"
+	"github.com/emersonkopp/fyne/internal/driver"
+	"github.com/emersonkopp/fyne/internal/painter/software"
+	"github.com/emersonkopp/fyne/internal/test"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

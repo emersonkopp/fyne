@@ -3,7 +3,7 @@ package app
 import (
 	"sync/atomic"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 var _ fyne.Lifecycle = (*Lifecycle)(nil)

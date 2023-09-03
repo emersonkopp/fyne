@@ -5,13 +5,13 @@ import (
 	"image/draw"
 	"sync"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/internal"
-	"fyne.io/fyne/v2/internal/app"
-	"fyne.io/fyne/v2/internal/cache"
-	"fyne.io/fyne/v2/internal/scale"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal"
+	"github.com/emersonkopp/fyne/internal/app"
+	"github.com/emersonkopp/fyne/internal/cache"
+	"github.com/emersonkopp/fyne/internal/scale"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 var (

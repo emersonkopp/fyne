@@ -8,8 +8,8 @@ import (
 	"runtime"
 	"strings"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/cmd/fyne/internal/util"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/cmd/fyne/internal/util"
 
 	"golang.org/x/mod/semver"
 	"golang.org/x/sys/execabs"
@@ -125,15 +125,15 @@ func envInit() (err error) {
 	}
 
 	// TODO re-enable once we find out what broke after September event 2020
-	//cmd := exec.Command("go", "list", "-e", "-f", `{{range context.ReleaseTags}}{{if eq . "go1.14"}}{{.}}{{end}}{{end}}`, "runtime")
-	//cmd.Stderr = os.Stderr
-	//out, err := cmd.Output()
-	//if err != nil {
+	// cmd := exec.Command("go", "list", "-e", "-f", `{{range context.ReleaseTags}}{{if eq . "go1.14"}}{{.}}{{end}}{{end}}`, "runtime")
+	// cmd.Stderr = os.Stderr
+	// out, err := cmd.Output()
+	// if err != nil {
 	//	return err
-	//}
-	//if len(strings.TrimSpace(string(out))) > 0 {
+	// }
+	// if len(strings.TrimSpace(string(out))) > 0 {
 	//		bitcodeEnabled = true
-	//}
+	// }
 
 	// Setup the cross-compiler environments.
 	if ndkRoot, err := ndkRoot(); err == nil {

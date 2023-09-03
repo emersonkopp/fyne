@@ -3,7 +3,7 @@ package theme
 import (
 	"testing"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 func BenchmarkTheme_current(b *testing.B) {

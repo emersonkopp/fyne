@@ -4,11 +4,11 @@ import (
 	"image/color"
 	"strings"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 const (

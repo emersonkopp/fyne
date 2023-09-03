@@ -32,7 +32,7 @@ func main() {
 			"chan_canvasobject.go": {
 				Type:    "fyne.CanvasObject",
 				Name:    "CanvasObject",
-				Imports: `import "fyne.io/fyne/v2"`,
+				Imports: `import "github.com/emersonkopp/fyne"`,
 			},
 			"chan_func.go": {
 				Type:    "func()",
@@ -53,7 +53,7 @@ func main() {
 					"sync"
 					"sync/atomic"
 
-					"fyne.io/fyne/v2"
+					"github.com/emersonkopp/fyne"
 				)`,
 			},
 		},
@@ -65,7 +65,7 @@ func main() {
 					"sync/atomic"
 					"unsafe"
 
-					"fyne.io/fyne/v2"
+					"github.com/emersonkopp/fyne"
 				)`,
 			},
 		},
@@ -74,7 +74,7 @@ func main() {
 				Type: "fyne.CanvasObject",
 				Name: "CanvasObject",
 				Imports: `import (
-					"fyne.io/fyne/v2"
+					"github.com/emersonkopp/fyne"
 				)`,
 			},
 		},

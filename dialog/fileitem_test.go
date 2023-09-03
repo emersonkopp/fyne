@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"fyne.io/fyne/v2/storage"
+	"github.com/emersonkopp/fyne/storage"
 )
 
 func TestFileItem_Name(t *testing.T) {

@@ -21,8 +21,8 @@ import (
 	"io"
 	"unsafe"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/storage/repository"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/storage/repository"
 )
 
 type secureReadCloser struct {

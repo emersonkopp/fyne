@@ -5,12 +5,12 @@ import (
 	"testing"
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	internalWidget "fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/test"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	internalWidget "github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/layout"
+	"github.com/emersonkopp/fyne/test"
+	"github.com/emersonkopp/fyne/theme"
 	"github.com/stretchr/testify/assert"
 )
 

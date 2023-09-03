@@ -4,13 +4,13 @@ import (
 	"math"
 	"strconv"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/driver/mobile"
-	"fyne.io/fyne/v2/internal/cache"
-	"fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/driver/mobile"
+	"github.com/emersonkopp/fyne/internal/cache"
+	"github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 const noCellMatch = math.MaxInt32 // TODO make this MaxInt once we move to newer Go version
@@ -209,7 +209,7 @@ func (t *Table) FocusGained() {
 // Implements: fyne.Focusable
 func (t *Table) FocusLost() {
 	t.focused = false
-	t.Refresh() //Item(t.currentFocus)
+	t.Refresh() // Item(t.currentFocus)
 }
 
 func (t *Table) MouseIn(ev *desktop.MouseEvent) {

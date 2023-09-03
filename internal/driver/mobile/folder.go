@@ -3,7 +3,7 @@ package mobile
 import (
 	"fmt"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 type lister struct {

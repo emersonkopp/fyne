@@ -3,7 +3,7 @@
 
 package mobile
 
-import "fyne.io/fyne/v2"
+import "github.com/emersonkopp/fyne"
 
 // Content returns the clipboard content for mobile simulator runs
 func (c *mobileClipboard) Content() string {

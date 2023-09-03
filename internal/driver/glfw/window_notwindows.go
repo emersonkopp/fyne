@@ -4,8 +4,8 @@
 package glfw
 
 import (
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/internal/scale"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/internal/scale"
 )
 
 func (w *window) setDarkMode() {

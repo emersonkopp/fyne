@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"fyne.io/fyne/v2/storage"
+	"github.com/emersonkopp/fyne/storage"
 	"github.com/stretchr/testify/assert"
 )
 

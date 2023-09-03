@@ -7,12 +7,12 @@ import (
 	"math/cmplx"
 	"strings"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	col "fyne.io/fyne/v2/internal/color"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/container"
+	col "github.com/emersonkopp/fyne/internal/color"
+	"github.com/emersonkopp/fyne/theme"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 const (

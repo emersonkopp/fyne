@@ -6,7 +6,7 @@ package glfw
 import (
 	"fmt"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 )

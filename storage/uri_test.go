@@ -5,11 +5,11 @@ import (
 	"runtime"
 	"testing"
 
-	intRepo "fyne.io/fyne/v2/internal/repository"
-	"fyne.io/fyne/v2/storage"
-	"fyne.io/fyne/v2/storage/repository"
+	intRepo "github.com/emersonkopp/fyne/internal/repository"
+	"github.com/emersonkopp/fyne/storage"
+	"github.com/emersonkopp/fyne/storage/repository"
 
-	_ "fyne.io/fyne/v2/test"
+	_ "github.com/emersonkopp/fyne/test"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -135,23 +135,23 @@ func TestURI_Parent(t *testing.T) {
 	assert.Equal(t, "file://C:/foo/bar/", parent.String())
 
 	// TODO hook in an http/https handler
-	//parent, err = storage.Parent(storage.NewURI("http://foo/bar/baz/"))
-	//assert.Nil(t, err)
-	//assert.Equal(t, "http://foo/bar/", parent.String())
+	// parent, err = storage.Parent(storage.NewURI("http://foo/bar/baz/"))
+	// assert.Nil(t, err)
+	// assert.Equal(t, "http://foo/bar/", parent.String())
 	//
-	//parent, err = storage.Parent(storage.NewURI("http:////foo/bar/baz/"))
-	//assert.Nil(t, err)
-	//assert.Equal(t, "http://foo/bar/", parent.String())
+	// parent, err = storage.Parent(storage.NewURI("http:////foo/bar/baz/"))
+	// assert.Nil(t, err)
+	// assert.Equal(t, "http://foo/bar/", parent.String())
 	//
-	//_, err = storage.Parent(storage.NewURI("http://foo"))
-	//assert.Equal(t, repository.ErrURIRoot, err)
+	// _, err = storage.Parent(storage.NewURI("http://foo"))
+	// assert.Equal(t, repository.ErrURIRoot, err)
 	//
-	//_, err = storage.Parent(storage.NewURI("http:///"))
-	//assert.Equal(t, repository.ErrURIRoot, err)
+	// _, err = storage.Parent(storage.NewURI("http:///"))
+	// assert.Equal(t, repository.ErrURIRoot, err)
 	//
-	//parent, err = storage.Parent(storage.NewURI("https://///foo/bar/"))
-	//assert.Nil(t, err)
-	//assert.Equal(t, "https:///foo/", parent.String())
+	// parent, err = storage.Parent(storage.NewURI("https://///foo/bar/"))
+	// assert.Nil(t, err)
+	// assert.Equal(t, "https:///foo/", parent.String())
 
 	if runtime.GOOS == "windows" {
 		// Only the Windows version of filepath will know how to handle

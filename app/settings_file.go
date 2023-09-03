@@ -8,7 +8,7 @@ import (
 	"io"
 	"os"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 func (s *settings) load() {

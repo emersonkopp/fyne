@@ -3,9 +3,9 @@ package mobile
 import (
 	"io"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/internal/driver/mobile/app"
-	"fyne.io/fyne/v2/storage"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/internal/driver/mobile/app"
+	"github.com/emersonkopp/fyne/storage"
 )
 
 type fileOpen struct {

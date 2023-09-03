@@ -11,15 +11,15 @@ import (
 	"runtime"
 	"sync"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/internal/driver/common"
-	"fyne.io/fyne/v2/internal/painter"
-	"fyne.io/fyne/v2/internal/painter/gl"
-	"fyne.io/fyne/v2/internal/scale"
-	"fyne.io/fyne/v2/internal/svg"
-	"fyne.io/fyne/v2/storage"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal/driver/common"
+	"github.com/emersonkopp/fyne/internal/painter"
+	"github.com/emersonkopp/fyne/internal/painter/gl"
+	"github.com/emersonkopp/fyne/internal/scale"
+	"github.com/emersonkopp/fyne/internal/svg"
+	"github.com/emersonkopp/fyne/storage"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -110,7 +110,19 @@ type window struct {
 	shouldWidth, shouldHeight       int
 	shouldExpand                    bool
 
-	pending []func()
+	pending   []func()
+	maximized bool
+}
+
+func (w *window) Maximize() {
+	if !w.visible {
+		w.maximized = true
+		return
+	}
+
+	runOnMain(func() {
+		w.viewport.Maximize()
+	})
 }
 
 func (w *window) SetFullScreen(full bool) {
@@ -790,6 +802,10 @@ func (w *window) create() {
 		w.requestedWidth, w.requestedHeight = w.width, w.height
 		// order of operation matters so we do these last items in order
 		w.viewport.SetSize(w.shouldWidth, w.shouldHeight) // ensure we requested latest size
+
+		if w.maximized {
+			w.viewport.Maximize()
+		}
 	})
 }
 

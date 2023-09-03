@@ -7,8 +7,8 @@ import (
 
 	"golang.org/x/image/draw"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
 )
 
 // PaintImage renders a given fyne Image to a Go standard image

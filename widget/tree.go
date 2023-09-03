@@ -3,13 +3,13 @@ package widget
 import (
 	"fmt"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/data/binding"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/internal/cache"
-	"fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/data/binding"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal/cache"
+	"github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 // allTreeNodesID represents all tree nodes when refreshing requested nodes
@@ -182,7 +182,7 @@ func (t *Tree) FocusGained() {
 // Implements: fyne.Focusable
 func (t *Tree) FocusLost() {
 	t.focused = false
-	t.Refresh() //Item(t.currentFocus)
+	t.Refresh() // Item(t.currentFocus)
 }
 
 // MinSize returns the size that this widget should not shrink below.

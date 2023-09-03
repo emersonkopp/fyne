@@ -3,7 +3,7 @@ package widget
 import (
 	"sync"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 type pool interface {

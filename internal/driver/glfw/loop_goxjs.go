@@ -6,7 +6,7 @@ package glfw
 import (
 	"fmt"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 
 	gl "github.com/fyne-io/gl-js"
 	glfw "github.com/fyne-io/glfw-js"

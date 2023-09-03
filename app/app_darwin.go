@@ -19,7 +19,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 	"golang.org/x/sys/execabs"
 )
 

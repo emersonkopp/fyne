@@ -7,12 +7,12 @@ import (
 	"math"
 	"math/cmplx"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/driver/desktop"
-	internalwidget "fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	internalwidget "github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/theme"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 var _ fyne.Widget = (*colorWheel)(nil)

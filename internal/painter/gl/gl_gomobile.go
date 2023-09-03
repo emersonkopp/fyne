@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"math"
 
-	"fyne.io/fyne/v2/internal/driver/mobile/gl"
+	"github.com/emersonkopp/fyne/internal/driver/mobile/gl"
 )
 
 const (

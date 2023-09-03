@@ -1,7 +1,7 @@
 package test
 
 import (
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 type testWindow struct {
@@ -94,6 +94,10 @@ func (w *testWindow) SetFixedSize(fixed bool) {
 }
 
 func (w *testWindow) SetIcon(_ fyne.Resource) {
+	// no-op
+}
+
+func (w *testWindow) Maximize() {
 	// no-op
 }
 

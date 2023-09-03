@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 	"github.com/fsnotify/fsnotify"
 )
 

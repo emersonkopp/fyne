@@ -11,14 +11,14 @@ import (
 
 	"github.com/fyne-io/image/ico"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/internal/animation"
-	intapp "fyne.io/fyne/v2/internal/app"
-	"fyne.io/fyne/v2/internal/driver"
-	"fyne.io/fyne/v2/internal/driver/common"
-	"fyne.io/fyne/v2/internal/painter"
-	intRepo "fyne.io/fyne/v2/internal/repository"
-	"fyne.io/fyne/v2/storage/repository"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/internal/animation"
+	intapp "github.com/emersonkopp/fyne/internal/app"
+	"github.com/emersonkopp/fyne/internal/driver"
+	"github.com/emersonkopp/fyne/internal/driver/common"
+	"github.com/emersonkopp/fyne/internal/painter"
+	intRepo "github.com/emersonkopp/fyne/internal/repository"
+	"github.com/emersonkopp/fyne/storage/repository"
 )
 
 // mainGoroutineID stores the main goroutine ID.
