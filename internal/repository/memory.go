@@ -1,13 +1,13 @@
 package repository
 
 import (
-	"github.com/emersonkopp/fyne"
-	"github.com/emersonkopp/fyne/storage"
-	"github.com/emersonkopp/fyne/storage/repository"
-
 	"fmt"
 	"io"
 	"strings"
+
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/storage"
+	"github.com/emersonkopp/fyne/storage/repository"
 )
 
 // declare conformance to interfaces
@@ -297,7 +297,7 @@ func (m *InMemoryRepository) List(u fyne.URI) ([]fyne.URI, error) {
 		// does not have one.
 		pSplit := strings.Split(p, "/")
 		ncomp := len(pSplit)
-		if p[len(p)-1] == '/' {
+		if len(p) > 0 && p[len(p)-1] == '/' {
 			ncomp--
 		}
 

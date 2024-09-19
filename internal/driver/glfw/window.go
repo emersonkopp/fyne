@@ -2,14 +2,18 @@ package glfw
 
 import (
 	"context"
+	"image/color"
 	_ "image/png" // for the icon
 	"math"
 	"runtime"
 	"time"
 
 	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/container"
 	"github.com/emersonkopp/fyne/driver/desktop"
 	"github.com/emersonkopp/fyne/internal/app"
+	"github.com/emersonkopp/fyne/internal/build"
 	"github.com/emersonkopp/fyne/internal/cache"
 	"github.com/emersonkopp/fyne/internal/driver"
 	"github.com/emersonkopp/fyne/internal/driver/common"
@@ -17,8 +21,7 @@ import (
 )
 
 const (
-	doubleClickDelay  = 300 // ms (maximum interval between clicks for double click detection)
-	dragMoveThreshold = 2   // how far can we move before it is a drag
+	dragMoveThreshold = 2 // how far can we move before it is a drag
 	windowIconSize    = 256
 )
 
@@ -62,7 +65,9 @@ func (w *window) Resize(size fyne.Size) {
 		}
 		w.viewLock.Unlock()
 		w.requestedWidth, w.requestedHeight = width, height
-		w.view().SetSize(width, height)
+		if runtime.GOOS != "js" {
+			w.view().SetSize(width, height)
+		}
 	})
 }
 
@@ -119,8 +124,9 @@ func (w *window) calculatedScale() float32 {
 }
 
 func (w *window) detectTextureScale() float32 {
-	winWidth, _ := w.view().GetSize()
-	texWidth, _ := w.view().GetFramebufferSize()
+	view := w.view()
+	winWidth, _ := view.GetSize()
+	texWidth, _ := view.GetFramebufferSize()
 	return float32(texWidth) / float32(winWidth)
 }
 
@@ -134,11 +140,7 @@ func (w *window) doShow() {
 		return
 	}
 
-	run.L.Lock()
-	for !run.flag {
-		run.Wait()
-	}
-	run.L.Unlock()
+	<-w.driver.waitForStart
 
 	w.createLock.Do(w.create)
 	if w.view() == nil {
@@ -149,15 +151,18 @@ func (w *window) doShow() {
 		w.viewLock.Lock()
 		w.visible = true
 		w.viewLock.Unlock()
-		w.view().SetTitle(w.title)
+		view := w.view()
+		view.SetTitle(w.title)
 
-		if w.centered {
+		if !build.IsWayland && w.centered {
 			w.doCenterOnScreen() // lastly center if that was requested
 		}
-		w.view().Show()
+		view.Show()
 
 		// save coordinates
-		w.xpos, w.ypos = w.view().GetPos()
+		if !build.IsWayland {
+			w.xpos, w.ypos = view.GetPos()
+		}
 
 		if w.fullScreen { // this does not work if called before viewport.Show()
 			go func() {
@@ -168,8 +173,8 @@ func (w *window) doShow() {
 	})
 
 	// show top canvas element
-	if w.canvas.Content() != nil {
-		w.canvas.Content().Show()
+	if content := w.canvas.Content(); content != nil {
+		content.Show()
 
 		runOnDraw(w, func() {
 			w.driver.repaintWindow(w)
@@ -192,8 +197,8 @@ func (w *window) Hide() {
 		v.Hide()
 
 		// hide top canvas element
-		if w.canvas.Content() != nil {
-			w.canvas.Content().Hide()
+		if content := w.canvas.Content(); content != nil {
+			content.Hide()
 		}
 	})
 }
@@ -214,9 +219,8 @@ func (w *window) Close() {
 		w.closing = true
 		w.viewLock.Unlock()
 		w.viewport.SetShouldClose(true)
-		cache.RangeTexturesFor(w.canvas, func(obj fyne.CanvasObject) {
-			w.canvas.Painter().Free(obj)
-		})
+
+		cache.RangeTexturesFor(w.canvas, w.canvas.Painter().Free)
 	})
 
 	w.canvas.WalkTrees(nil, func(node *common.RenderCacheNode, _ fyne.Position) {
@@ -228,19 +232,12 @@ func (w *window) Close() {
 
 func (w *window) ShowAndRun() {
 	w.Show()
-	w.driver.Run()
+	fyne.CurrentApp().Run()
 }
 
 // Clipboard returns the system clipboard
 func (w *window) Clipboard() fyne.Clipboard {
-	if w.view() == nil {
-		return nil
-	}
-
-	if w.clipboard == nil {
-		w.clipboard = &clipboard{window: w.viewport}
-	}
-	return w.clipboard
+	return &clipboard{}
 }
 
 func (w *window) Content() fyne.CanvasObject {
@@ -280,7 +277,6 @@ func (w *window) processClosed() {
 
 // destroy this window and, if it's the last window quit the app
 func (w *window) destroy(d *gLDriver) {
-	w.DestroyEventQueue()
 	cache.CleanCanvas(w.canvas)
 
 	if w.master {
@@ -288,6 +284,7 @@ func (w *window) destroy(d *gLDriver) {
 	} else if runtime.GOOS == "darwin" {
 		go d.focusPreviousWindow()
 	}
+	w.DestroyEventQueue()
 }
 
 func (w *window) processMoved(x, y int) {
@@ -465,7 +462,7 @@ func (w *window) processMouseMoved(xpos float64, ypos float64) {
 	}
 }
 
-func (w *window) objIsDragged(obj interface{}) bool {
+func (w *window) objIsDragged(obj any) bool {
 	if w.mouseDragged != nil && obj != nil {
 		draggedObj, _ := obj.(fyne.Draggable)
 		return draggedObj == w.mouseDragged
@@ -514,7 +511,7 @@ func (w *window) processMouseClicked(button desktop.MouseButton, action action, 
 
 	co, pos, _ := w.findObjectAtPositionMatching(w.canvas, mousePos, func(object fyne.CanvasObject) bool {
 		switch object.(type) {
-		case fyne.Tappable, fyne.SecondaryTappable, fyne.DoubleTappable, fyne.Focusable, desktop.Mouseable, desktop.Hoverable:
+		case fyne.Tappable, fyne.SecondaryTappable, fyne.DoubleTappable, fyne.Focusable, desktop.Mouseable:
 			return true
 		case fyne.Draggable:
 			if mouseDragStarted {
@@ -656,7 +653,7 @@ func (w *window) mouseClickedHandleTapDoubleTap(co fyne.CanvasObject, ev *fyne.P
 func (w *window) waitForDoubleTap(co fyne.CanvasObject, ev *fyne.PointEvent) {
 	var ctx context.Context
 	w.mouseLock.Lock()
-	ctx, w.mouseCancelFunc = context.WithDeadline(context.TODO(), time.Now().Add(time.Millisecond*doubleClickDelay))
+	ctx, w.mouseCancelFunc = context.WithDeadline(context.TODO(), time.Now().Add(w.driver.DoubleTapDelay()))
 	defer w.mouseCancelFunc()
 	w.mouseLock.Unlock()
 
@@ -807,12 +804,14 @@ func (w *window) processCharInput(char rune) {
 func (w *window) processFocused(focus bool) {
 	if focus {
 		if curWindow == nil {
-			fyne.CurrentApp().Lifecycle().(*app.Lifecycle).TriggerEnteredForeground()
+			if f := fyne.CurrentApp().Lifecycle().(*app.Lifecycle).OnEnteredForeground(); f != nil {
+				w.QueueEvent(f)
+			}
 		}
 		curWindow = w
-		w.canvas.FocusGained()
+		w.QueueEvent(w.canvas.FocusGained)
 	} else {
-		w.canvas.FocusLost()
+		w.QueueEvent(w.canvas.FocusLost)
 		w.mouseLock.Lock()
 		w.mousePos = fyne.Position{}
 		w.mouseLock.Unlock()
@@ -824,7 +823,9 @@ func (w *window) processFocused(focus bool) {
 			}
 
 			curWindow = nil
-			fyne.CurrentApp().Lifecycle().(*app.Lifecycle).TriggerExitedForeground()
+			if f := fyne.CurrentApp().Lifecycle().(*app.Lifecycle).OnExitedForeground(); f != nil {
+				w.QueueEvent(f)
+			}
 		}()
 	}
 }
@@ -832,7 +833,7 @@ func (w *window) processFocused(focus bool) {
 func (w *window) triggersShortcut(localizedKeyName fyne.KeyName, key fyne.KeyName, modifier fyne.KeyModifier) bool {
 	var shortcut fyne.Shortcut
 	ctrlMod := fyne.KeyModifierControl
-	if runtime.GOOS == "darwin" {
+	if isMacOSRuntime() {
 		ctrlMod = fyne.KeyModifierSuper
 	}
 	// User pressing physical keys Ctrl+V while using a Russian (or any non-ASCII) keyboard layout
@@ -848,6 +849,12 @@ func (w *window) triggersShortcut(localizedKeyName fyne.KeyName, key fyne.KeyNam
 	}
 	if modifier == ctrlMod {
 		switch keyName {
+		case fyne.KeyZ:
+			// detect undo shortcut
+			shortcut = &fyne.ShortcutUndo{}
+		case fyne.KeyY:
+			// detect redo shortcut
+			shortcut = &fyne.ShortcutRedo{}
 		case fyne.KeyV:
 			// detect paste shortcut
 			shortcut = &fyne.ShortcutPaste{
@@ -928,7 +935,7 @@ func (w *window) RescaleContext() {
 	runOnMain(w.rescaleOnMain)
 }
 
-func (w *window) Context() interface{} {
+func (w *window) Context() any {
 	return nil
 }
 
@@ -942,7 +949,38 @@ func (w *window) runOnMainWhenCreated(fn func()) {
 }
 
 func (d *gLDriver) CreateWindow(title string) fyne.Window {
-	return d.createWindow(title, true)
+	if runtime.GOOS != "js" {
+		return d.createWindow(title, true)
+	}
+
+	// handling multiple windows by overlaying on the root for web
+	var root fyne.Window
+	d.windowLock.RLock()
+	hasVisible := false
+	for _, w := range d.windows {
+		if w.(*window).visible {
+			hasVisible = true
+			root = w
+			break
+		}
+	}
+	d.windowLock.RUnlock()
+
+	if !hasVisible {
+		return d.createWindow(title, true)
+	}
+
+	c := root.Canvas().(*glCanvas)
+	multi := c.webExtraWindows
+	if multi == nil {
+		multi = container.NewMultipleWindows()
+		multi.Resize(c.Size())
+		c.webExtraWindows = multi
+	}
+	inner := container.NewInnerWindow(title, canvas.NewRectangle(color.Transparent))
+	multi.Add(inner)
+
+	return wrapInnerWindow(inner, root, d)
 }
 
 func (d *gLDriver) createWindow(title string, decorate bool) fyne.Window {
@@ -973,12 +1011,15 @@ func (w *window) doShowAgain() {
 
 	runOnMain(func() {
 		// show top canvas element
-		if w.canvas.Content() != nil {
-			w.canvas.Content().Show()
+		if content := w.canvas.Content(); content != nil {
+			content.Show()
 		}
 
-		w.view().SetPos(w.xpos, w.ypos)
-		w.view().Show()
+		view := w.view()
+		if !build.IsWayland {
+			view.SetPos(w.xpos, w.ypos)
+		}
+		view.Show()
 		w.viewLock.Lock()
 		w.visible = true
 		w.viewLock.Unlock()

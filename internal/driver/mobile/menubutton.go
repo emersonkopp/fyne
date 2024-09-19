@@ -2,7 +2,7 @@ package mobile
 
 import (
 	"github.com/emersonkopp/fyne"
-	"github.com/emersonkopp/fyne/canvas"
+	fynecanvas "github.com/emersonkopp/fyne/canvas"
 	"github.com/emersonkopp/fyne/theme"
 	"github.com/emersonkopp/fyne/widget"
 )
@@ -22,12 +22,12 @@ func (w *window) newMenuButton(menu *fyne.MainMenu) *menuButton {
 func (m *menuButton) CreateRenderer() fyne.WidgetRenderer {
 	return &menuButtonRenderer{btn: widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
 		m.win.canvas.showMenu(m.menu)
-	}), bg: canvas.NewRectangle(theme.BackgroundColor())}
+	}), bg: fynecanvas.NewRectangle(theme.Color(theme.ColorNameBackground))}
 }
 
 type menuButtonRenderer struct {
 	btn *widget.Button
-	bg  *canvas.Rectangle
+	bg  *fynecanvas.Rectangle
 }
 
 func (m *menuButtonRenderer) Destroy() {
@@ -48,5 +48,5 @@ func (m *menuButtonRenderer) Objects() []fyne.CanvasObject {
 }
 
 func (m *menuButtonRenderer) Refresh() {
-	m.bg.FillColor = theme.BackgroundColor()
+	m.bg.FillColor = theme.Color(theme.ColorNameBackground)
 }

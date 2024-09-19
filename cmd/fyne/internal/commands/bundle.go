@@ -69,6 +69,11 @@ type Bundler struct {
 	noheader       bool
 }
 
+// NewBundler returns a command that can handle the bundling assets into a GUI app binary.
+func NewBundler() *Bundler {
+	return &Bundler{}
+}
+
 // AddFlags adds all the command line flags for passing to the Bundler.
 //
 // Deprecated: Access to the individual cli commands are being removed.
@@ -238,7 +243,7 @@ func openOutputFile(filePath string, noheader bool) (file *os.File, close func()
 }
 
 func sanitiseName(file, prefix string) string {
-	titled := strings.Title(file)
+	titled := strings.Title(file) //lint:ignore SA1019 This is fine for our use case.
 	name := filenameRegex.ReplaceAllString(titled, "")
 
 	return prefix + name

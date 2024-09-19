@@ -6,22 +6,23 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/emersonkopp/fyne/canvas"
 	col "github.com/emersonkopp/fyne/internal/color"
 	_ "github.com/emersonkopp/fyne/test"
 	"github.com/emersonkopp/fyne/theme"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestEntryCursorAnim(t *testing.T) {
-	cursorOpaque := theme.PrimaryColor()
-	r, g, b, _ := col.ToNRGBA(theme.PrimaryColor())
+	cursorOpaque := theme.Color(theme.ColorNamePrimary)
+	r, g, b, _ := col.ToNRGBA(cursorOpaque)
 	cursorDim := color.NRGBA{R: uint8(r), G: uint8(g), B: uint8(b), A: 0x16}
 
 	alphaEquals := func(color1, color2 color.Color) bool {
 		_, _, _, a1 := col.ToNRGBA(color1)
 		_, _, _, a2 := col.ToNRGBA(color2)
-		return a1 == a2
+		return uint8(a1>>8) == uint8(a2>>8) // only check 8bit colour channels
 	}
 
 	cursor := canvas.NewRectangle(color.Black)

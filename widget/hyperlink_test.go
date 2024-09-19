@@ -1,11 +1,16 @@
 package widget
 
 import (
+	"image"
+	"image/color"
 	"net/url"
 	"testing"
 
 	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
 	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/internal/cache"
+	"github.com/emersonkopp/fyne/layout"
 	"github.com/emersonkopp/fyne/test"
 	"github.com/emersonkopp/fyne/theme"
 
@@ -14,7 +19,7 @@ import (
 )
 
 func TestHyperlink_MinSize(t *testing.T) {
-	u, err := url.Parse("https://fyne.io/")
+	u, err := url.Parse("https://github.com/emersonkopp/")
 	assert.Nil(t, err)
 
 	hyperlink := NewHyperlink("Test", u)
@@ -35,17 +40,21 @@ func TestHyperlink_MinSize(t *testing.T) {
 }
 
 func TestHyperlink_Cursor(t *testing.T) {
-	u, err := url.Parse("https://fyne.io/")
+	u, err := url.Parse("https://github.com/emersonkopp/")
 	hyperlink := NewHyperlink("Test", u)
 
 	assert.Nil(t, err)
+	assert.Equal(t, desktop.DefaultCursor, hyperlink.Cursor())
+
+	hyperlink.hovered = true
 	assert.Equal(t, desktop.PointerCursor, hyperlink.Cursor())
 }
 
 func TestHyperlink_Alignment(t *testing.T) {
 	hyperlink := &Hyperlink{Text: "Test", Alignment: fyne.TextAlignTrailing}
 	hyperlink.CreateRenderer()
-	assert.Equal(t, fyne.TextAlignTrailing, textRenderTexts(hyperlink.provider)[0].Alignment)
+
+	assert.Equal(t, fyne.TextAlignTrailing, richTextRenderTexts(&hyperlink.provider)[0].Alignment)
 }
 
 func TestHyperlink_Hide(t *testing.T) {
@@ -63,14 +72,13 @@ func TestHyperlink_Hide(t *testing.T) {
 }
 
 func TestHyperlink_Focus(t *testing.T) {
-	app := test.NewApp()
-	defer test.NewApp()
-	app.Settings().SetTheme(theme.LightTheme())
+	app := test.NewTempApp(t)
+	app.Settings().SetTheme(test.Theme())
 
 	hyperlink := &Hyperlink{Text: "Test"}
 	w := test.NewWindow(hyperlink)
-	w.SetPadded(false)
 	defer w.Close()
+	w.SetPadded(false)
 	w.Resize(hyperlink.MinSize())
 
 	test.AssertImageMatches(t, "hyperlink/initial.png", w.Canvas().Capture())
@@ -91,6 +99,19 @@ func TestHyperlink_OnTapped(t *testing.T) {
 	}
 	test.Tap(link)
 	assert.Equal(t, 1, tapped)
+}
+
+func TestHyperlink_TappedOutsideTextBoundary(t *testing.T) {
+	tapped := 0
+	link := &Hyperlink{Text: "Test"}
+	link.OnTapped = func() {
+		tapped++
+	}
+	link.syncSegments()
+	link.Tapped(&fyne.PointEvent{
+		Position: fyne.NewPos(50 /*past text boundary*/, 2),
+	})
+	assert.Equal(t, 0, tapped)
 }
 
 func TestHyperlink_KeyboardOnTapped(t *testing.T) {
@@ -117,7 +138,7 @@ func TestHyperlink_Resize(t *testing.T) {
 }
 
 func TestHyperlink_SetText(t *testing.T) {
-	u, err := url.Parse("https://fyne.io/")
+	u, err := url.Parse("https://github.com/emersonkopp/")
 	assert.Nil(t, err)
 
 	hyperlink := &Hyperlink{Text: "Test", URL: u}
@@ -125,7 +146,7 @@ func TestHyperlink_SetText(t *testing.T) {
 	hyperlink.SetText("New")
 
 	assert.Equal(t, "New", hyperlink.Text)
-	assert.Equal(t, "New", textRenderTexts(hyperlink.provider)[0].Text)
+	assert.Equal(t, "New", richTextRenderTexts(&hyperlink.provider)[0].Text)
 }
 
 func TestHyperlink_SetUrl(t *testing.T) {
@@ -141,6 +162,49 @@ func TestHyperlink_SetUrl(t *testing.T) {
 	assert.Nil(t, err)
 	hyperlink.SetURL(sURL)
 	assert.Equal(t, sURL, hyperlink.URL)
+}
+
+func TestHyperlink_ThemeOverride(t *testing.T) {
+	test.NewTempApp(t)
+	test.ApplyTheme(t, test.Theme())
+
+	hyperlink := &Hyperlink{Text: "Test"}
+	bg := canvas.NewRectangle(color.Gray{Y: 0xc0})
+	w := test.NewWindow(&fyne.Container{Layout: layout.NewStackLayout(),
+		Objects: []fyne.CanvasObject{bg, hyperlink}})
+	defer w.Close()
+	w.SetPadded(false)
+	w.Resize(hyperlink.MinSize())
+
+	light := w.Canvas().Capture()
+	test.ApplyTheme(t, test.NewTheme())
+	hyperlink.Refresh()
+	ugly := w.Canvas().Capture()
+	assertPixelsMatch(t, false, ugly, light)
+
+	cache.OverrideTheme(hyperlink, test.Theme())
+	hyperlink.Refresh()
+	override := w.Canvas().Capture()
+	assertPixelsMatch(t, true, override, light)
+}
+
+func TestHyperlink_Truncate(t *testing.T) {
+	hyperlink := &Hyperlink{Text: "TestingWithLongText"}
+	hyperlink.CreateRenderer()
+	hyperlink.Resize(fyne.NewSize(100, 20))
+
+	texts := richTextRenderTexts(&hyperlink.provider)
+	assert.Equal(t, "TestingWithLongText", texts[0].Text)
+
+	hyperlink.Truncation = fyne.TextTruncateClip
+	hyperlink.Refresh()
+	texts = richTextRenderTexts(&hyperlink.provider)
+	assert.Equal(t, "TestingWith", texts[0].Text)
+
+	hyperlink.Truncation = fyne.TextTruncateEllipsis
+	hyperlink.Refresh()
+	texts = richTextRenderTexts(&hyperlink.provider)
+	assert.Equal(t, "TestingWi…", texts[0].Text)
 }
 
 func TestHyperlink_CreateRendererDoesNotAffectSize(t *testing.T) {
@@ -160,4 +224,14 @@ func TestHyperlink_CreateRendererDoesNotAffectSize(t *testing.T) {
 	r.Layout(size)
 	assert.Equal(t, size, link.Size())
 	assert.Equal(t, size, link.MinSize())
+}
+
+func assertPixelsMatch(t *testing.T, match bool, img1, img2 image.Image) {
+	pix1 := img1.(*image.NRGBA).Pix
+	pix2 := img2.(*image.NRGBA).Pix
+	if match {
+		assert.Equal(t, pix1, pix2)
+	} else {
+		assert.NotEqual(t, pix1, pix2)
+	}
 }

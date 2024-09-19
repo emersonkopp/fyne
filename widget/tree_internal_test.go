@@ -194,6 +194,127 @@ func TestTree_Focus(t *testing.T) {
 	assert.Equal(t, "foo", tree.selected[0])
 }
 
+func TestTree_Keyboard(t *testing.T) {
+	// Prepare data for a tree like this:
+	// item_1
+	//   |- item_1_1
+	//     |- item_1_1_1
+	//     |- item_1_1_2
+	//   |- item_1_2
+	//     |- item_1_2_1
+	//     |- item_1_2_2
+	// item_2
+	//   |- item_2_1
+	//   |- item_2_2
+	var treeData = map[string][]string{
+		"":         {"item_1", "item_2"},
+		"item_1":   {"item_1_1", "item_1_2"},
+		"item_2":   {"item_2_1", "item_2_2"},
+		"item_1_1": {"item_1_1_1", "item_1_1_2"},
+		"item_1_2": {"item_1_2_1", "item_1_2_2"},
+	}
+	tree := NewTreeWithStrings(treeData)
+	window := test.NewWindow(tree)
+	defer window.Close()
+	window.Resize(tree.MinSize().Max(fyne.NewSize(250, 400)))
+
+	canvas := window.Canvas().(test.WindowlessCanvas)
+	assert.Nil(t, canvas.Focused())
+
+	// Start with a fully collapsed tree
+	tree.CloseAllBranches()
+
+	// Select the first node
+	canvas.FocusNext()
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), false)
+
+	// Open the node "item_1"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyRight})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1_1", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), false)
+
+	// Go to next node "item1_2"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyDown})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1_2", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), false)
+
+	// Open the node "item_1_2"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyRight})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1_2_1", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), true)
+
+	// Go to next node "item_1_2_2"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyDown})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1_2_2", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), true)
+
+	// Press left on the non-branch node "item_1_2_2"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyLeft})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1_2", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), true)
+
+	// Press left on the open branch node "item_1_2"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyLeft})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1_2", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), false)
+
+	// Press left on the closed branch node "item_1_2"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyLeft})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), true)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), false)
+
+	// Press left on the open branch node "item_1"
+	tree.TypedKey(&fyne.KeyEvent{Name: fyne.KeyLeft})
+	// Validate the state
+	assert.NotNil(t, canvas.Focused())
+	assert.Equal(t, "item_1", canvas.Focused().(*Tree).currentFocus)
+	assert.Equal(t, tree.IsBranchOpen("item_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_2"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_1"), false)
+	assert.Equal(t, tree.IsBranchOpen("item_1_2"), false)
+}
+
 func TestTree_Indentation(t *testing.T) {
 	data := make(map[string][]string)
 	tree := NewTreeWithStrings(data)
@@ -437,8 +558,7 @@ func TestTree_Select_Unselects(t *testing.T) {
 }
 
 func TestTree_ScrollTo(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
+	test.NewTempApp(t)
 	test.ApplyTheme(t, test.NewTheme())
 
 	data := make(map[string][]string)
@@ -472,8 +592,7 @@ func TestTree_ScrollTo(t *testing.T) {
 }
 
 func TestTree_ScrollToBottom(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
+	test.NewTempApp(t)
 	test.ApplyTheme(t, test.NewTheme())
 
 	data := make(map[string][]string)
@@ -542,8 +661,7 @@ func TestTree_ScrollToSelection(t *testing.T) {
 }
 
 func TestTree_ScrollToTop(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
+	test.NewTempApp(t)
 	test.ApplyTheme(t, test.NewTheme())
 
 	data := make(map[string][]string)
@@ -757,10 +875,10 @@ func TestTree_RefreshItem(t *testing.T) {
 	}
 	tree.OpenBranch("foo")
 
-	c := test.NewWindow(tree)
-	c.Resize(fyne.NewSize(100, 100))
+	w := test.NewTempWindow(t, tree)
+	w.Resize(fyne.NewSize(100, 100))
 
-	r := test.WidgetRenderer(tree.scroller.Content.(*treeContent)).(*treeContentRenderer)
+	r := test.TempWidgetRenderer(t, tree.scroller.Content.(*treeContent)).(*treeContentRenderer)
 
 	assert.Equal(t, "Leaf", r.leaves["foobar1"].content.(*Label).Text)
 
@@ -778,14 +896,14 @@ func TestTreeNodeRenderer_BackgroundColor(t *testing.T) {
 	tree.OpenAllBranches()
 	t.Run("Branch", func(t *testing.T) {
 		a := getBranch(t, tree, "A")
-		ar := test.WidgetRenderer(a).(*treeNodeRenderer)
-		assert.Equal(t, theme.HoverColor(), ar.background.FillColor)
+		ar := test.TempWidgetRenderer(t, a).(*treeNodeRenderer)
+		assert.Equal(t, theme.Color(theme.ColorNameHover), ar.background.FillColor)
 		assert.False(t, ar.background.Visible())
 	})
 	t.Run("Leaf", func(t *testing.T) {
 		b := getLeaf(t, tree, "B")
-		br := test.WidgetRenderer(b).(*treeNodeRenderer)
-		assert.Equal(t, theme.HoverColor(), br.background.FillColor)
+		br := test.TempWidgetRenderer(t, b).(*treeNodeRenderer)
+		assert.Equal(t, theme.Color(theme.ColorNameHover), br.background.FillColor)
 		assert.False(t, br.background.Visible())
 	})
 }
@@ -798,22 +916,22 @@ func TestTreeNodeRenderer_BackgroundColor_Hovered(t *testing.T) {
 	tree.OpenAllBranches()
 	t.Run("Branch", func(t *testing.T) {
 		a := getBranch(t, tree, "A")
-		ar := test.WidgetRenderer(a).(*treeNodeRenderer)
+		ar := test.TempWidgetRenderer(t, a).(*treeNodeRenderer)
 		a.MouseIn(&desktop.MouseEvent{})
-		assert.Equal(t, theme.HoverColor(), ar.background.FillColor)
+		assert.Equal(t, theme.Color(theme.ColorNameHover), ar.background.FillColor)
 		assert.True(t, ar.background.Visible())
 		a.MouseOut()
-		assert.Equal(t, theme.HoverColor(), ar.background.FillColor)
+		assert.Equal(t, theme.Color(theme.ColorNameHover), ar.background.FillColor)
 		assert.False(t, ar.background.Visible())
 	})
 	t.Run("Leaf", func(t *testing.T) {
 		b := getLeaf(t, tree, "B")
-		br := test.WidgetRenderer(b).(*treeNodeRenderer)
+		br := test.TempWidgetRenderer(t, b).(*treeNodeRenderer)
 		b.MouseIn(&desktop.MouseEvent{})
-		assert.Equal(t, theme.HoverColor(), br.background.FillColor)
+		assert.Equal(t, theme.Color(theme.ColorNameHover), br.background.FillColor)
 		assert.True(t, br.background.Visible())
 		b.MouseOut()
-		assert.Equal(t, theme.HoverColor(), br.background.FillColor)
+		assert.Equal(t, theme.Color(theme.ColorNameHover), br.background.FillColor)
 		assert.False(t, br.background.Visible())
 	})
 }

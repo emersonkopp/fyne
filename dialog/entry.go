@@ -2,6 +2,7 @@ package dialog
 
 import (
 	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/lang"
 	"github.com/emersonkopp/fyne/widget"
 )
 
@@ -49,7 +50,7 @@ func (i *EntryDialog) SetOnClosed(callback func()) {
 func NewEntryDialog(title, message string, onConfirm func(string), parent fyne.Window) *EntryDialog {
 	i := &EntryDialog{entry: widget.NewEntry()}
 	items := []*widget.FormItem{widget.NewFormItem(message, i.entry)}
-	i.FormDialog = NewForm(title, "Ok", "Cancel", items, func(ok bool) {
+	i.FormDialog = NewForm(title, lang.L("Ok"), lang.L("Cancel"), items, func(ok bool) {
 		// User has confirmed and entered an input
 		if ok && onConfirm != nil {
 			onConfirm(i.entry.Text)

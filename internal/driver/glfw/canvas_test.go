@@ -1,5 +1,4 @@
 //go:build !no_glfw && !mobile
-// +build !no_glfw,!mobile
 
 package glfw
 
@@ -10,6 +9,7 @@ import (
 	"github.com/emersonkopp/fyne"
 	"github.com/emersonkopp/fyne/canvas"
 	"github.com/emersonkopp/fyne/container"
+	internalTest "github.com/emersonkopp/fyne/internal/test"
 	"github.com/emersonkopp/fyne/theme"
 	"github.com/emersonkopp/fyne/widget"
 
@@ -510,7 +510,7 @@ func TestGlCanvas_Scale(t *testing.T) {
 }
 
 func TestGlCanvas_SetContent(t *testing.T) {
-	fyne.CurrentApp().Settings().SetTheme(theme.DarkTheme())
+	fyne.CurrentApp().Settings().SetTheme(internalTest.DarkTheme(theme.DefaultTheme()))
 	var menuHeight float32
 	if hasNativeMenu() {
 		menuHeight = 0
@@ -556,7 +556,7 @@ func TestGlCanvas_SetContent(t *testing.T) {
 var _ fyne.Layout = (*recordingLayout)(nil)
 
 type recordingLayout struct {
-	layoutEvents []interface{}
+	layoutEvents []any
 }
 
 func (l *recordingLayout) Layout(objects []fyne.CanvasObject, size fyne.Size) {
@@ -567,7 +567,7 @@ func (l *recordingLayout) MinSize([]fyne.CanvasObject) fyne.Size {
 	return fyne.NewSize(6, 9)
 }
 
-func (l *recordingLayout) popLayoutEvent() (e interface{}) {
+func (l *recordingLayout) popLayoutEvent() (e any) {
 	e, l.layoutEvents = pop(l.layoutEvents)
 	return
 }

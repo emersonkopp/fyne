@@ -6,8 +6,10 @@ import (
 
 	"github.com/emersonkopp/fyne"
 	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/container"
 	"github.com/emersonkopp/fyne/internal"
 	"github.com/emersonkopp/fyne/internal/app"
+	"github.com/emersonkopp/fyne/internal/build"
 	"github.com/emersonkopp/fyne/internal/driver"
 	"github.com/emersonkopp/fyne/internal/driver/common"
 	"github.com/emersonkopp/fyne/theme"
@@ -20,10 +22,10 @@ var _ fyne.Canvas = (*glCanvas)(nil)
 type glCanvas struct {
 	common.Canvas
 
-	content       fyne.CanvasObject
-	menu          fyne.CanvasObject
-	padded, debug bool
-	size          fyne.Size
+	content fyne.CanvasObject
+	menu    fyne.CanvasObject
+	padded  bool
+	size    fyne.Size
 
 	onTypedRune func(rune)
 	onTypedKey  func(*fyne.KeyEvent)
@@ -33,7 +35,8 @@ type glCanvas struct {
 
 	scale, detectedScale, texScale float32
 
-	context driver.WithContext
+	context         driver.WithContext
+	webExtraWindows *container.MultipleWindows
 }
 
 func (c *glCanvas) Capture() image.Image {
@@ -95,8 +98,9 @@ func (c *glCanvas) Padded() bool {
 func (c *glCanvas) PixelCoordinateForPosition(pos fyne.Position) (int, int) {
 	c.RLock()
 	texScale := c.texScale
+	scale := c.scale
 	c.RUnlock()
-	multiple := c.Scale() * texScale
+	multiple := scale * texScale
 	scaleInt := func(x float32) int {
 		return int(math.Round(float64(x * multiple)))
 	}
@@ -114,6 +118,9 @@ func (c *glCanvas) Resize(size fyne.Size) {
 	c.size = nearestSize
 	c.Unlock()
 
+	if c.webExtraWindows != nil {
+		c.webExtraWindows.Resize(size)
+	}
 	for _, overlay := range c.Overlays().List() {
 		if p, ok := overlay.(*widget.PopUp); ok {
 			// TODO: remove this when #707 is being addressed.
@@ -298,7 +305,7 @@ func (c *glCanvas) paint(size fyne.Size) {
 			}
 		}
 
-		if c.debug {
+		if build.Mode == fyne.BuildDebug {
 			c.DrawDebugOverlay(node.Obj(), pos, size)
 		}
 	}
@@ -338,7 +345,6 @@ func (c *glCanvas) applyThemeOutOfTreeObjects() {
 func newCanvas() *glCanvas {
 	c := &glCanvas{scale: 1.0, texScale: 1.0, padded: true}
 	c.Initialize(c, c.overlayChanged)
-	c.setContent(&canvas.Rectangle{FillColor: theme.BackgroundColor()})
-	c.debug = fyne.CurrentApp().Settings().BuildType() == fyne.BuildDebug
+	c.setContent(&canvas.Rectangle{FillColor: theme.Color(theme.ColorNameBackground)})
 	return c
 }

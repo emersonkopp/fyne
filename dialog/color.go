@@ -11,6 +11,7 @@ import (
 	"github.com/emersonkopp/fyne/canvas"
 	"github.com/emersonkopp/fyne/container"
 	col "github.com/emersonkopp/fyne/internal/color"
+	"github.com/emersonkopp/fyne/lang"
 	"github.com/emersonkopp/fyne/theme"
 	"github.com/emersonkopp/fyne/widget"
 )
@@ -43,7 +44,7 @@ type ColorPickerDialog struct {
 func NewColorPicker(title, message string, callback func(c color.Color), parent fyne.Window) *ColorPickerDialog {
 	return &ColorPickerDialog{
 		dialog:   newDialog(title, message, theme.ColorPaletteIcon(), nil /*cancel?*/, parent),
-		color:    theme.PrimaryColor(),
+		color:    theme.Color(theme.ColorNamePrimary),
 		callback: callback,
 	}
 }
@@ -83,8 +84,8 @@ func (p *ColorPickerDialog) Show() {
 func (p *ColorPickerDialog) createSimplePickers() (contents []fyne.CanvasObject) {
 	contents = append(contents, newColorBasicPicker(p.selectColor), newColorGreyscalePicker(p.selectColor))
 	if recent := newColorRecentPicker(p.selectColor); len(recent.(*fyne.Container).Objects) > 0 {
-		// Add divider and recents if there are any
-		contents = append(contents, canvas.NewLine(theme.ShadowColor()), recent)
+		// Add divider and recents if there are any,
+		contents = append(contents, canvas.NewLine(theme.Color(theme.ColorNameShadow)), recent)
 	}
 	return
 }
@@ -105,7 +106,7 @@ func (p *ColorPickerDialog) updateUI() {
 	if w := p.win; w != nil {
 		w.Hide()
 	}
-	p.dialog.dismiss = &widget.Button{Text: "Cancel", Icon: theme.CancelIcon(),
+	p.dialog.dismiss = &widget.Button{Text: lang.L("Cancel"), Icon: theme.CancelIcon(),
 		OnTapped: p.dialog.Hide,
 	}
 	if p.Advanced {
@@ -113,7 +114,7 @@ func (p *ColorPickerDialog) updateUI() {
 			p.color = c
 		})
 
-		advancedItem := widget.NewAccordionItem("Advanced", p.picker)
+		advancedItem := widget.NewAccordionItem(lang.L("Advanced"), p.picker)
 		if p.advanced != nil {
 			advancedItem.Open = p.advanced.Items[0].Open
 		}
@@ -129,7 +130,7 @@ func (p *ColorPickerDialog) updateUI() {
 			p.advanced,
 		)
 
-		confirm := &widget.Button{Text: "Confirm", Icon: theme.ConfirmIcon(), Importance: widget.HighImportance,
+		confirm := &widget.Button{Text: lang.L("Confirm"), Icon: theme.ConfirmIcon(), Importance: widget.HighImportance,
 			OnTapped: func() {
 				p.selectColor(p.color)
 			},

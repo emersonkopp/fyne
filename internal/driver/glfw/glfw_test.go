@@ -1,5 +1,4 @@
 //go:build !no_glfw && !mobile
-// +build !no_glfw,!mobile
 
 package glfw
 
@@ -24,7 +23,7 @@ func assertCanvasSize(t *testing.T, w *window, size fyne.Size) {
 }
 
 func ensureCanvasSize(t *testing.T, w *window, size fyne.Size) {
-	if runtime.GOOS == "linux" {
+	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
 		// TODO: find the root cause for these problems and solve them without additional repaint
 		// fixes issues where the window does not have the correct size
 		waitForCanvasSize(t, w, size, true)
@@ -35,14 +34,10 @@ func ensureCanvasSize(t *testing.T, w *window, size fyne.Size) {
 func repaintWindow(w *window) {
 	// Wait for GLFW loop to be running.
 	// If we try to paint windows before the context is created, we will end up on the wrong thread.
-	run.L.Lock()
-	for !run.flag {
-		run.Wait()
-	}
-	run.L.Unlock()
+	<-w.driver.waitForStart
 
 	runOnDraw(w, func() {
-		d.(*gLDriver).repaintWindow(w)
+		d.repaintWindow(w)
 	})
 
 	time.Sleep(time.Millisecond * 150) // wait for the frames to be rendered... o

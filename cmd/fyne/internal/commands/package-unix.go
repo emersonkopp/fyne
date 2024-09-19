@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/emersonkopp/fyne/cmd/fyne/internal/metadata"
 	"github.com/emersonkopp/fyne/cmd/fyne/internal/templates"
+	"github.com/emersonkopp/fyne/internal/metadata"
 
 	"golang.org/x/sys/execabs"
 )

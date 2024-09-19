@@ -1,14 +1,14 @@
 package mobile
 
 import (
+	"github.com/emersonkopp/fyne"
 	"github.com/emersonkopp/fyne/driver/mobile"
 	"github.com/emersonkopp/fyne/internal/driver/mobile/event/size"
-
-	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/lang"
 )
 
 type device struct {
-	safeTop, safeLeft, safeWidth, safeHeight int
+	safeTop, safeLeft, safeBottom, safeRight int
 }
 
 //lint:file-ignore U1000 Var currentDPI is used in other files, but not here
@@ -19,6 +19,10 @@ var (
 
 // Declare conformity with Device
 var _ fyne.Device = (*device)(nil)
+
+func (*device) Locale() fyne.Locale {
+	return lang.SystemLocale()
+}
 
 func (*device) Orientation() fyne.DeviceOrientation {
 	switch currentOrientation {

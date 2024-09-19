@@ -58,7 +58,7 @@ func goAndroidBuild(pkg *packages.Package, bundleID string, androidArchs []strin
 		buf.WriteString(`<?xml version="1.0" encoding="utf-8"?>`)
 		err := templates.ManifestAndroid.Execute(buf, manifestTmplData{
 			JavaPkgPath: bundleID,
-			Name:        strings.Title(appName),
+			Name:        strings.Title(appName), //lint:ignore SA1019 This is fine for our use case.
 			Debug:       !buildRelease,
 			LibName:     libName,
 			Version:     version,
@@ -153,7 +153,7 @@ func goAndroidBuild(pkg *packages.Package, bundleID string, androidArchs []strin
 		_, err := execabs.LookPath("bundletool")
 		if err != nil {
 			_, _ = fmt.Fprint(os.Stderr, "Required command 'bundletool' not found when building Android for release.\n")
-			_, _ = fmt.Fprint(os.Stderr, "For more information see https://g.co/androidappbundle.\n")
+			_, _ = fmt.Fprint(os.Stderr, "For more information see https://developer.android.com/tools/bundletool.\n")
 			return nil, fmt.Errorf("bundletool: command not found")
 		}
 		err = convertAPKToAAB(buildO)
@@ -299,7 +299,7 @@ func buildAPK(out io.Writer, nmpkgs map[string]map[string]bool, libFiles []strin
 			dst := "lib/" + toolchain.abi + "/libopenal.so"
 			src := filepath.Join(gomobilepath, dst)
 			if _, err := os.Stat(src); err != nil {
-				return nil, errors.New("the Android requires the fyne.io/fyne/v2/internal/driver/mobile/exp/audio/al, but the OpenAL libraries was not found. Please run gomobile init with the -openal Flag pointing to an OpenAL source directory")
+				return nil, errors.New("the Android requires the github.com/emersonkopp/fyne/internal/driver/mobile/exp/audio/al, but the OpenAL libraries was not found. Please run gomobile init with the -openal Flag pointing to an OpenAL source directory")
 			}
 			if err := apkwWriteFile(dst, src, apkw); err != nil {
 				return nil, err

@@ -6,17 +6,17 @@ import (
 	"image/color"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/emersonkopp/fyne"
 	"github.com/emersonkopp/fyne/canvas"
 	"github.com/emersonkopp/fyne/container"
 	"github.com/emersonkopp/fyne/test"
 	"github.com/emersonkopp/fyne/theme"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestCanvas_walkTree(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
+	test.NewTempApp(t)
 
 	leftObj1 := canvas.NewRectangle(color.Gray16{Y: 1})
 	leftObj2 := canvas.NewRectangle(color.Gray16{Y: 2})
@@ -36,7 +36,7 @@ func TestCanvas_walkTree(t *testing.T) {
 	tree := &renderCacheTree{root: &RenderCacheNode{obj: content}}
 	c := &Canvas{}
 	c.Initialize(nil, func() {})
-	c.SetContentTreeAndFocusMgr(&canvas.Rectangle{FillColor: theme.BackgroundColor()})
+	c.SetContentTreeAndFocusMgr(&canvas.Rectangle{FillColor: theme.Color(theme.ColorNameBackground)})
 
 	type nodeInfo struct {
 		obj                                     fyne.CanvasObject

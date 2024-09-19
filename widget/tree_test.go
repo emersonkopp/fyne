@@ -6,7 +6,10 @@ import (
 	"time"
 
 	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/container"
 	"github.com/emersonkopp/fyne/data/binding"
+	"github.com/emersonkopp/fyne/layout"
 	"github.com/emersonkopp/fyne/test"
 	"github.com/emersonkopp/fyne/theme"
 	"github.com/emersonkopp/fyne/widget"
@@ -286,14 +289,14 @@ func TestTree_Layout(t *testing.T) {
 }
 
 func TestTree_ChangeTheme(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
+	test.NewTempApp(t)
 
 	tree := widget.NewTreeWithStrings(treeData)
 	tree.OpenBranch("foo")
 
 	window := test.NewWindow(tree)
 	defer window.Close()
+	window.SetPadded(false)
 	window.Resize(fyne.NewSize(220, 220))
 
 	tree.Refresh() // Force layout
@@ -307,9 +310,28 @@ func TestTree_ChangeTheme(t *testing.T) {
 	})
 }
 
+func TestTree_OverrideTheme(t *testing.T) {
+	test.NewTempApp(t)
+
+	tree := widget.NewTreeWithStrings(treeData)
+	tree.OpenBranch("foo")
+
+	window := test.NewWindow(tree)
+	defer window.Close()
+	window.SetPadded(false)
+	window.Resize(fyne.NewSize(220, 220))
+	test.ApplyTheme(t, test.NewTheme())
+
+	normal := test.Theme()
+	bg := canvas.NewRectangle(normal.Color(theme.ColorNameBackground, theme.VariantDark))
+	window.SetContent(&fyne.Container{Layout: layout.NewStackLayout(),
+		Objects: []fyne.CanvasObject{bg, container.NewThemeOverride(tree, normal)}})
+	window.Resize(fyne.NewSize(220, 220))
+	test.AssertImageMatches(t, "tree/theme_initial.png", window.Canvas().Capture())
+}
+
 func TestTree_Move(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
+	test.NewTempApp(t)
 
 	tree := widget.NewTreeWithStrings(treeData)
 	tree.OpenBranch("foo")
@@ -327,9 +349,8 @@ func TestTree_Move(t *testing.T) {
 }
 
 func TestTree_Refresh(t *testing.T) {
-	test.NewApp()
-	defer test.NewApp()
-	test.ApplyTheme(t, theme.LightTheme())
+	test.NewTempApp(t)
+	test.ApplyTheme(t, test.Theme())
 
 	value := "Foo Leaf"
 	tree := widget.NewTreeWithStrings(treeData)
