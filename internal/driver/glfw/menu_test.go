@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/lang"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/lang"
 
 	"github.com/stretchr/testify/assert"
 )

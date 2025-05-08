@@ -1,9 +1,9 @@
 package container
 
 import (
-	"fyne.io/fyne/v2"
-	intWidget "fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	intWidget "github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 // MultipleWindows is a container that handles multiple `InnerWindow` containers.

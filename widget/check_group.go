@@ -3,9 +3,9 @@ package widget
 import (
 	"strings"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/internal/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/internal/widget"
 )
 
 // CheckGroup widget has a list of text labels and checkbox icons next to each.
@@ -99,9 +99,9 @@ func (r *CheckGroup) Remove(option string) bool {
 
 // SetSelected sets the checked options, it can be used to set a default option.
 func (r *CheckGroup) SetSelected(options []string) {
-	//if r.Selected == options {
+	// if r.Selected == options {
 	//	return
-	//}
+	// }
 
 	r.Selected = options
 

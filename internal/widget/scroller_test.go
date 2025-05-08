@@ -5,12 +5,12 @@ import (
 	"testing"
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/internal/widget"
-	"fyne.io/fyne/v2/test"
-	"fyne.io/fyne/v2/theme"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/container"
+	"github.com/emersonkopp/fyne/internal/widget"
+	"github.com/emersonkopp/fyne/test"
+	"github.com/emersonkopp/fyne/theme"
 )
 
 func TestScrollContainer_Theme(t *testing.T) {
@@ -47,5 +47,5 @@ func TestScrollContainer_ThemeOverride(t *testing.T) {
 	w.SetContent(container.NewStack(bg, container.NewThemeOverride(scroll, normal)))
 	w.Resize(fyne.NewSize(100, 100))
 	// TODO why is this off by a 1bit RGB difference?
-	//test.AssertImageMatches(t, "scroll/theme_initial.png", w.Canvas().Capture())
+	// test.AssertImageMatches(t, "scroll/theme_initial.png", w.Canvas().Capture())
 }

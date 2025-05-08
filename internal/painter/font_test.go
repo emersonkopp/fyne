@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/internal/painter"
-	intTest "fyne.io/fyne/v2/internal/test"
-	"fyne.io/fyne/v2/test"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/internal/painter"
+	intTest "github.com/emersonkopp/fyne/internal/test"
+	"github.com/emersonkopp/fyne/test"
 )
 
 func TestCachedFontFace(t *testing.T) {

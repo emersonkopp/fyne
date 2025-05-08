@@ -1,7 +1,7 @@
 package app
 
 import (
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 var meta = fyne.AppMetadata{

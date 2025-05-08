@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 // NewAllStrings creates a validator that requires all of the passed string validators to pass.

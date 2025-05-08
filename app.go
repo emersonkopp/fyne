@@ -75,7 +75,7 @@ type App interface {
 	CloudProvider() CloudProvider // get the (if any) configured provider
 
 	// SetCloudProvider allows developers to specify how this application should integrate with cloud services.
-	// See `fyne.io/cloud` package for implementation details.
+	// See `github.com/emersonkopp/cloud` package for implementation details.
 	//
 	// Since: 2.3
 	SetCloudProvider(CloudProvider) // configure cloud for this app

@@ -805,8 +805,8 @@ M2 device which allowed us to complete the marked (*) issues.
 ### Changes that are not backward compatible
 
 These changes may break some apps, please read the 
-[upgrading doc](https://developer.fyne.io/api/v2.0/upgrading) for more info
-The import path is now `fyne.io/fyne/v2` when you are ready to make the update.
+[upgrading doc](https://developer.github.com/emersonkopp/api/v2.0/upgrading) for more info
+The import path is now `github.com/emersonkopp/fyne` when you are ready to make the update.
 
 * Coordinate system to float32
   * Size and Position units were changed from int to float32
@@ -839,7 +839,7 @@ The import path is now `fyne.io/fyne/v2` when you are ready to make the update.
   - `widget.Box` (now `container.NewH/VBox`, with `Children` field moved to `Objects`)
   - `widget.TabContainer` and `widget.AppTabs` (now `container.AppTabs`)
 * Many deprecated fields have been removed, replacements listed in API docs 1.4
-  - for specific information you can browse https://developer.fyne.io/api/v1.4/
+  - for specific information you can browse https://developer.github.com/emersonkopp/api/v1.4/
 
 ### Added
 

@@ -6,15 +6,15 @@ import (
 	"log"
 	"net/url"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/cmd/fyne_demo/data"
-	"fyne.io/fyne/v2/cmd/fyne_demo/tutorials"
-	"fyne.io/fyne/v2/cmd/fyne_settings/settings"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/driver/desktop"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/app"
+	"github.com/emersonkopp/fyne/cmd/fyne_demo/data"
+	"github.com/emersonkopp/fyne/cmd/fyne_demo/tutorials"
+	"github.com/emersonkopp/fyne/cmd/fyne_settings/settings"
+	"github.com/emersonkopp/fyne/container"
+	"github.com/emersonkopp/fyne/driver/desktop"
+	"github.com/emersonkopp/fyne/theme"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 const preferenceCurrentTutorial = "currentTutorial"
@@ -161,12 +161,12 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 			_ = a.OpenURL(u)
 		}),
 		fyne.NewMenuItem("Support", func() {
-			u, _ := url.Parse("https://fyne.io/support/")
+			u, _ := url.Parse("https://github.com/emersonkopp/support/")
 			_ = a.OpenURL(u)
 		}),
 		fyne.NewMenuItemSeparator(),
 		fyne.NewMenuItem("Sponsor", func() {
-			u, _ := url.Parse("https://fyne.io/sponsor/")
+			u, _ := url.Parse("https://github.com/emersonkopp/sponsor/")
 			_ = a.OpenURL(u)
 		}))
 

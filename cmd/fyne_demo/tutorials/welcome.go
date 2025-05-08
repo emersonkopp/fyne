@@ -5,13 +5,13 @@ import (
 	"net/url"
 	"strings"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/cmd/fyne_demo/data"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/cmd/fyne_demo/data"
+	"github.com/emersonkopp/fyne/container"
+	"github.com/emersonkopp/fyne/layout"
+	"github.com/emersonkopp/fyne/theme"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 func parseURL(urlStr string) *url.URL {
@@ -34,11 +34,11 @@ func welcomeScreen(_ fyne.Window) fyne.CanvasObject {
 
 	footer := container.NewHBox(
 		layout.NewSpacer(),
-		widget.NewHyperlink("fyne.io", parseURL("https://fyne.io/")),
+		widget.NewHyperlink("fyne.io", parseURL("https://github.com/emersonkopp/")),
 		widget.NewLabel("-"),
-		widget.NewHyperlink("documentation", parseURL("https://docs.fyne.io/")),
+		widget.NewHyperlink("documentation", parseURL("https://docs.github.com/emersonkopp/")),
 		widget.NewLabel("-"),
-		widget.NewHyperlink("sponsor", parseURL("https://fyne.io/sponsor/")),
+		widget.NewHyperlink("sponsor", parseURL("https://github.com/emersonkopp/sponsor/")),
 		layout.NewSpacer(),
 	)
 

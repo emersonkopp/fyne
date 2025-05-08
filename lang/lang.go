@@ -13,7 +13,7 @@ import (
 	"github.com/jeandeaual/go-locale"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 
 	"golang.org/x/text/language"
 )

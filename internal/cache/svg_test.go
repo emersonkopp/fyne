@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 	"github.com/stretchr/testify/assert"
 )
 

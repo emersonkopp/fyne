@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 func BenchmarkRunnerAllocs(b *testing.B) {

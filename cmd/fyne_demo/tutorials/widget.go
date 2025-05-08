@@ -6,16 +6,16 @@ import (
 	"net/url"
 	"time"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/cmd/fyne_demo/data"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/data/validation"
-	"fyne.io/fyne/v2/dialog"
-	"fyne.io/fyne/v2/driver/mobile"
-	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/canvas"
+	"github.com/emersonkopp/fyne/cmd/fyne_demo/data"
+	"github.com/emersonkopp/fyne/container"
+	"github.com/emersonkopp/fyne/data/validation"
+	"github.com/emersonkopp/fyne/dialog"
+	"github.com/emersonkopp/fyne/driver/mobile"
+	"github.com/emersonkopp/fyne/layout"
+	"github.com/emersonkopp/fyne/theme"
+	"github.com/emersonkopp/fyne/widget"
 )
 
 const (
@@ -39,7 +39,7 @@ var (
 )
 
 func makeAccordionTab(_ fyne.Window) fyne.CanvasObject {
-	link, err := url.Parse("https://fyne.io/")
+	link, err := url.Parse("https://github.com/emersonkopp/")
 	if err != nil {
 		fyne.LogError("Could not parse URL", err)
 	}
@@ -214,7 +214,7 @@ func makeTextGrid() *widget.TextGrid {
 func makeTextTab(_ fyne.Window) fyne.CanvasObject {
 	label := widget.NewLabel("Label")
 
-	link, err := url.Parse("https://fyne.io/")
+	link, err := url.Parse("https://github.com/emersonkopp/")
 	if err != nil {
 		fyne.LogError("Could not parse URL", err)
 	}
@@ -243,7 +243,7 @@ func makeTextTab(_ fyne.Window) fyne.CanvasObject {
 * Item2
 * Item3
 
-Normal **Bold** *Italic* [Link](https://fyne.io/) and some ` + "`Code`" + `.
+Normal **Bold** *Italic* [Link](https://github.com/emersonkopp/) and some ` + "`Code`" + `.
 This styled row should also wrap as expected, but only *when required*.
 
 > An interesting quote here, most likely sharing some very interesting wisdom.`)

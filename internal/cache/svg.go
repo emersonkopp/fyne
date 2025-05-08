@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 var svgs = &sync.Map{} // make(map[string]*svgInfo)

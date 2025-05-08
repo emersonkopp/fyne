@@ -2,6 +2,6 @@
 
 package theme
 
-import "fyne.io/fyne/v2"
+import "github.com/emersonkopp/fyne"
 
 var emoji fyne.Resource

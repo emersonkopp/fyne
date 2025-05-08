@@ -5,10 +5,10 @@ package dialog
 import (
 	"strconv"
 
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/driver"
-	"fyne.io/fyne/v2/internal/build"
-	"fyne.io/fyne/v2/storage"
+	"github.com/emersonkopp/fyne"
+	"github.com/emersonkopp/fyne/driver"
+	"github.com/emersonkopp/fyne/internal/build"
+	"github.com/emersonkopp/fyne/storage"
 	"github.com/rymdport/portal/filechooser"
 )
 

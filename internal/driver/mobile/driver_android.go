@@ -2,7 +2,7 @@
 
 package mobile
 
-import driverDefs "fyne.io/fyne/v2/driver"
+import driverDefs "github.com/emersonkopp/fyne/driver"
 
 /*
 #include <stdbool.h>

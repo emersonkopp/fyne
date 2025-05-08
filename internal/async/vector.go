@@ -4,7 +4,7 @@ import (
 	"math"
 	"sync/atomic"
 
-	"fyne.io/fyne/v2"
+	"github.com/emersonkopp/fyne"
 )
 
 // Position is an atomic version of fyne.Position.

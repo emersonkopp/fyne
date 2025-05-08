@@ -1,6 +1,6 @@
 package widget
 
-import "fyne.io/fyne/v2"
+import "github.com/emersonkopp/fyne"
 
 var _ fyne.WidgetRenderer = (*SimpleRenderer)(nil)
 
